@@ -1,0 +1,15 @@
+{
+  "name": "Czerwone Łąki",
+  "short_name": "Czerwone Łąki",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#0b0b0b",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
