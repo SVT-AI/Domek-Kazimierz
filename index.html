@@ -49,6 +49,198 @@ color:white;
 overflow-x:hidden;
 }
 
-/* LOADER */
+/* HERO */
 
+.hero{
+height:100vh;
+background:
+linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.6)),
+url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600');
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:40px;
+}
+
+.hero-content{
+max-width:900px;
+}
+
+.hero h1{
+font-size:72px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+opacity:.9;
+margin-bottom:35px;
+}
+
+.btn{
+display:inline-block;
+padding:18px 34px;
+background:var(--gold);
+color:black;
+text-decoration:none;
+font-weight:700;
+border-radius:16px;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+background:var(--gold2);
+}
+
+/* SECTION */
+
+.section{
+padding:100px 8%;
+}
+
+.section h2{
+font-size:42px;
+margin-bottom:30px;
+color:var(--gold2);
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+}
+
+.card{
+background:var(--glass);
+padding:30px;
+border-radius:var(--radius);
+backdrop-filter:blur(12px);
+box-shadow:var(--shadow);
+}
+
+.card h3{
+margin-bottom:15px;
+}
+
+/* MAP */
+
+#map{
+height:500px;
+border-radius:28px;
+overflow:hidden;
+margin-top:40px;
+}
+
+/* FOOTER */
+
+footer{
+padding:50px;
+text-align:center;
+opacity:.7;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.section{
+padding:70px 6%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Czerwone Łąki</h1>
+<p>Luxury Nature House • Kazimierz Dolny • Prywatność • Natura</p>
+<a href="#kontakt" class="btn">Rezerwuj pobyt</a>
+</div>
+</section>
+
+<section class="section">
+<h2>Dlaczego warto?</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Premium Design</h3>
+<p>Nowoczesna architektura połączona z naturą i luksusem.</p>
+</div>
+
+<div class="card">
+<h3>Las i Cisza</h3>
+<p>Prywatna przestrzeń z dala od miasta i hałasu.</p>
+</div>
+
+<div class="card">
+<h3>Aktywny Relaks</h3>
+<p>Rowery, spacery, ognisko i wyjątkowe widoki.</p>
+</div>
+
+</div>
+</section>
+
+<section class="section">
+<h2>Lokalizacja</h2>
+
+<div id="map"></div>
+</section>
+
+<section class="section" id="kontakt">
+<h2>Kontakt</h2>
+
+<div class="card">
+<p>Email: kontakt@czerwonelaki.pl</p>
+<p>Telefon: +48 500 000 000</p>
+</div>
+
+</section>
+
+<footer>
+© 2026 Czerwone Łąki — Luxury Nature House
+</footer>
+
+<script>
+
+/* MAPA */
+
+const map = L.map('map').setView([51.3227, 21.9497], 12);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+L.marker([51.3227, 21.9497])
+.addTo(map)
+.bindPopup('Czerwone Łąki')
+.openPopup();
+
+/* PWA */
+
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', () => {
+navigator.serviceWorker.register('sw.js');
+});
+}
+
+</script>
+
+</body>
 </html>
