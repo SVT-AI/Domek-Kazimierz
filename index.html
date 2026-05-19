@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Czerwone Łąki — Premium Forest</title>
+
+<!-- Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* GLOBAL */
+body{
+  margin:0;
+  font-family:'Inter', sans-serif;
+  background:#0f120f;
+  color:#e8e8e8;
+}
+
+h1, h2{
+  font-weight:300;
+  letter-spacing:1px;
+  text-align:center;
+  color:#d9e6d2;
+}
+
+section{
+  max-width:1000px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+/* HERO */
+.hero{
+  height:60vh;
+  background:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+  position:relative;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.hero h1{
+  position:relative;
+  z-index:2;
+  font-size:3rem;
+  text-shadow:0 0 20px rgba(0,0,0,0.6);
+}
+
+/* FAQ */
+.faq-item{
+  background:#1a1f1a;
+  border:1px solid #2a322a;
+  padding:15px;
+  border-radius:8px;
+  margin:10px 0;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.faq-item.active{
+  background:#243024;
+}
+
+.faq-item p{
+  display:none;
+  margin-top:10px;
+  color:#cfe3cf;
+}
+
+.faq-item.active p{
+  display:block;
+}
+
+/* MAP */
+#map{
+  width:100%;
+  height:300px;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+/* GALLERY */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+  margin-top:30px;
+}
+
+.gallery img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:12px;
+  transition:0.4s;
+  filter:brightness(0.85);
+}
+
+.gallery img:hover{
+  transform:scale(1.05);
+  filter:brightness(1);
+  box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+/* ANIMATION */
+.fade-in{
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeIn 1s forwards;
+}
+
+@keyframes fadeIn{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero fade-in">
+  <h1>Czerwone Łąki — Domek wśród natury</h1>
+</div>
+
+<!-- FAQ -->
+<section>
+  <h2>FAQ</h2>
+
+  <div class="faq-item">
+    <h3>Gdzie znajduje się domek?</h3>
+    <p>Domek położony jest w Słotwinach, 24‑120 Kazimierz Dolny.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Czy można przyjechać z psem?</h3>
+    <p>Tak, akceptujemy zwierzęta.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Czy jest parking?</h3>
+    <p>Tak, bezpłatny parking na miejscu.</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section>
+  <h2>Galeria Czerwone Łąki</h2>
+
+  <div class="gallery fade-in">
+    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Las o poranku">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Drewniany domek">
+    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Ścieżka w lesie">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Taras z widokiem">
+    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Natura i spokój">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Relaks wśród drzew">
+  </div>
+</section>
+
+<!-- MAP -->
+<section>
+  <h2>Mapa okolicy</h2>
+  <div id="map"></div>
+</section>
+
+<script>
+/* FAQ */
+const faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(item=>{
+  item.addEventListener('click',()=>{
+    item.classList.toggle('active');
+  });
+});
+
+/* MAP */
+const map = L.map('map').setView([51.3225,21.9489],12);
+
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  { attribution:'© OpenStreetMap' }
+).addTo(map);
+
+const places = [
+  { name:'Kazimierz Dolny', coords:[51.3225,21.9489] },
+  { name:'Wąwóz Korzeniowy Dół', coords:[51.3145,21.9304] },
+  { name:'Janowiec', coords:[51.3237,21.8917] }
+];
+
+places.forEach(place=>{
+  L.marker(place.coords)
+    .addTo(map)
+    .bindPopup(place.name);
+});
+
+/* PWA */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
