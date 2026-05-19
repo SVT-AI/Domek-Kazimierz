@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Czerwone Łąki — Luxury Nature House</title>
 
-<meta name="description" content="Nowoczesny domek premium w naturze. Kazimierz Dolny, las, relaks, rowery i prywatność.">
-<meta name="theme-color" content="#0b0b0b">
-
-<meta property="og:title" content="Czerwone Łąki — Luxury Nature House">
-<meta property="og:description" content="Ekskluzywny domek premium w naturze.">
-<meta property="og:image" content="og-image.jpg">
-<meta property="og:type" content="website">
-
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="favicon.png">
+<meta name="description" content="Ekskluzywny domek premium w naturze. Kazimierz Dolny • Prywatność • Luxury Escape">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
 :root{
---gold:#d6b36a;
---gold2:#f1d18d;
---dark:#090909;
+--gold:#d9b66f;
+--gold2:#f5d89c;
+--bg:#050505;
 --glass:rgba(255,255,255,.08);
---text:#fff;
---shadow:0 10px 40px rgba(0,0,0,.45);
+--border:rgba(255,255,255,.12);
+--shadow:0 20px 60px rgba(0,0,0,.55);
 --radius:28px;
 }
 
@@ -44,107 +34,309 @@ scroll-behavior:smooth;
 
 body{
 font-family:'Poppins',sans-serif;
-background:#050505;
+background:var(--bg);
 color:white;
 overflow-x:hidden;
+}
+
+/* BACKGROUND */
+
+.bg-video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+filter:brightness(.45);
+}
+
+.overlay{
+position:fixed;
+inset:0;
+background:
+linear-gradient(to bottom, rgba(0,0,0,.3), rgba(0,0,0,.8)),
+radial-gradient(circle at top right, rgba(217,182,111,.2), transparent 30%);
+z-index:-1;
+}
+
+/* NAV */
+
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:24px 7%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+backdrop-filter:blur(18px);
+background:rgba(0,0,0,.25);
+border-bottom:1px solid rgba(255,255,255,.08);
+z-index:999;
+}
+
+.logo{
+font-size:26px;
+font-weight:800;
+letter-spacing:2px;
+color:var(--gold2);
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:26px;
+font-weight:500;
+transition:.3s;
+}
+
+nav a:hover{
+color:var(--gold2);
 }
 
 /* HERO */
 
 .hero{
 height:100vh;
-background:
-linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.6)),
-url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600');
-background-size:cover;
-background-position:center;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 text-align:center;
-padding:40px;
+padding:0 8%;
+position:relative;
 }
 
 .hero-content{
-max-width:900px;
+max-width:1100px;
+animation:fadeUp 1.2s ease;
+}
+
+.badge{
+display:inline-block;
+padding:12px 22px;
+border-radius:100px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.12);
+margin-bottom:28px;
+font-size:14px;
+letter-spacing:1px;
 }
 
 .hero h1{
-font-size:72px;
+font-size:90px;
+line-height:1;
 font-weight:800;
-margin-bottom:20px;
+margin-bottom:30px;
+text-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .hero p{
 font-size:20px;
+line-height:1.8;
 opacity:.9;
-margin-bottom:35px;
+max-width:800px;
+margin:auto auto 40px;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
 }
 
 .btn{
-display:inline-block;
-padding:18px 34px;
-background:var(--gold);
-color:black;
-text-decoration:none;
+padding:18px 36px;
+border-radius:18px;
 font-weight:700;
-border-radius:16px;
-transition:.3s;
+text-decoration:none;
+transition:.4s;
 }
 
-.btn:hover{
-transform:translateY(-3px);
-background:var(--gold2);
+.btn-gold{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+color:black;
+box-shadow:0 10px 30px rgba(217,182,111,.35);
+}
+
+.btn-gold:hover{
+transform:translateY(-5px) scale(1.03);
+}
+
+.btn-glass{
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+color:white;
+}
+
+.btn-glass:hover{
+background:rgba(255,255,255,.14);
+}
+
+/* FLOATING CARD */
+
+.floating{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+max-width:1100px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
+
+.f-card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+padding:24px;
+border-radius:24px;
+border:1px solid rgba(255,255,255,.1);
+box-shadow:var(--shadow);
+}
+
+.f-card i{
+font-size:26px;
+margin-bottom:14px;
+color:var(--gold2);
+}
+
+.f-card h3{
+margin-bottom:10px;
 }
 
 /* SECTION */
 
 .section{
-padding:100px 8%;
+padding:140px 8%;
+position:relative;
 }
 
-.section h2{
-font-size:42px;
-margin-bottom:30px;
-color:var(--gold2);
+.section-title{
+font-size:58px;
+margin-bottom:20px;
+font-weight:800;
 }
 
-.cards{
+.section-sub{
+opacity:.7;
+max-width:700px;
+line-height:1.8;
+margin-bottom:70px;
+}
+
+/* GALLERY */
+
+.gallery{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:30px;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:26px;
 }
 
-.card{
-background:var(--glass);
-padding:30px;
-border-radius:var(--radius);
-backdrop-filter:blur(12px);
+.gallery img{
+width:100%;
+height:340px;
+object-fit:cover;
+border-radius:26px;
+transition:.6s;
+cursor:pointer;
 box-shadow:var(--shadow);
 }
 
-.card h3{
-margin-bottom:15px;
+.gallery img:hover{
+transform:scale(1.04) rotate(-1deg);
 }
 
-/* MAP */
+/* PREMIUM BOX */
 
-#map{
-height:500px;
-border-radius:28px;
-overflow:hidden;
-margin-top:40px;
+.premium-box{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+align-items:center;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+padding:60px;
+border-radius:40px;
+box-shadow:var(--shadow);
+}
+
+.premium-box img{
+width:100%;
+border-radius:30px;
+height:520px;
+object-fit:cover;
+}
+
+.premium-box h2{
+font-size:56px;
+margin-bottom:24px;
+}
+
+.premium-box p{
+line-height:1.9;
+opacity:.85;
+margin-bottom:30px;
 }
 
 /* FOOTER */
 
 footer{
-padding:50px;
+padding:80px 8%;
 text-align:center;
+border-top:1px solid rgba(255,255,255,.08);
 opacity:.7;
 }
 
-@media(max-width:768px){
+/* ANIMATION */
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(60px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* MOBILE */
+
+@media(max-width:980px){
+
+.hero h1{
+font-size:58px;
+}
+
+.floating{
+grid-template-columns:1fr 1fr;
+position:relative;
+margin-top:60px;
+bottom:auto;
+left:auto;
+transform:none;
+width:100%;
+}
+
+.premium-box{
+grid-template-columns:1fr;
+}
+
+.section-title{
+font-size:42px;
+}
+
+}
+
+@media(max-width:700px){
 
 .hero h1{
 font-size:42px;
@@ -154,8 +346,16 @@ font-size:42px;
 font-size:16px;
 }
 
-.section{
-padding:70px 6%;
+.floating{
+grid-template-columns:1fr;
+}
+
+nav{
+padding:18px 5%;
+}
+
+nav .menu{
+display:none;
 }
 
 }
@@ -165,49 +365,162 @@ padding:70px 6%;
 
 <body>
 
+<video autoplay muted loop playsinline class="bg-video">
+<source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-a-forest-1561275123762?download=1080p" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<nav>
+<div class="logo">CZERWONE ŁĄKI</div>
+
+<div class="menu">
+<a href="#">Home</a>
+<a href="#about">Luxury</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Kontakt</a>
+</div>
+</nav>
+
 <section class="hero">
+
 <div class="hero-content">
-<h1>Czerwone Łąki</h1>
-<p>Luxury Nature House • Kazimierz Dolny • Prywatność • Natura</p>
-<a href="#kontakt" class="btn">Rezerwuj pobyt</a>
+
+<div class="badge">
+LUXURY NATURE HOUSE • KAZIMIERZ DOLNY
 </div>
+
+<h1>
+Ucieknij od świata.<br>
+Odnajdź ciszę.
+</h1>
+
+<p>
+Ekskluzywny domek premium pośród natury.
+Prywatność, las, design i doświadczenie luxury retreat
+na poziomie butikowych resortów.
+</p>
+
+<div class="hero-buttons">
+<a href="#contact" class="btn btn-gold">
+Rezerwuj Pobyt
+</a>
+
+<a href="#gallery" class="btn btn-glass">
+Zobacz Galerię
+</a>
+</div>
+
+</div>
+
+<div class="floating">
+
+<div class="f-card">
+<i class="fa-solid fa-tree"></i>
+<h3>Natura</h3>
+<p>Prywatny las i cisza.</p>
+</div>
+
+<div class="f-card">
+<i class="fa-solid fa-fire"></i>
+<h3>Premium Relax</h3>
+<p>Jacuzzi, ognisko, zachody słońca.</p>
+</div>
+
+<div class="f-card">
+<i class="fa-solid fa-mountain-sun"></i>
+<h3>Widoki</h3>
+<p>Klimat luxury retreat.</p>
+</div>
+
+<div class="f-card">
+<i class="fa-solid fa-star"></i>
+<h3>Experience</h3>
+<p>Nowoczesny minimal luxury.</p>
+</div>
+
+</div>
+
 </section>
 
-<section class="section">
-<h2>Dlaczego warto?</h2>
+<section class="section" id="about">
 
-<div class="cards">
+<h2 class="section-title">
+Nowoczesny luksus<br>w środku natury
+</h2>
 
-<div class="card">
-<h3>Premium Design</h3>
-<p>Nowoczesna architektura połączona z naturą i luksusem.</p>
+<p class="section-sub">
+Projekt inspirowany luksusowymi resortami premium.
+Połączenie architektury, drewna, światła i przestrzeni.
+</p>
+
+<div class="premium-box">
+
+<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1400">
+
+<div>
+
+<h2>Luxury Escape</h2>
+
+<p>
+Minimalistyczne wnętrza premium, panoramiczne przeszklenia,
+ciepłe światło, prywatny taras oraz pełne zanurzenie w naturze.
+</p>
+
+<a href="#contact" class="btn btn-gold">
+Sprawdź Dostępność
+</a>
+
 </div>
 
-<div class="card">
-<h3>Las i Cisza</h3>
-<p>Prywatna przestrzeń z dala od miasta i hałasu.</p>
 </div>
 
-<div class="card">
-<h3>Aktywny Relaks</h3>
-<p>Rowery, spacery, ognisko i wyjątkowe widoki.</p>
-</div>
-
-</div>
 </section>
 
-<section class="section">
-<h2>Lokalizacja</h2>
+<section class="section" id="gallery">
 
-<div id="map"></div>
+<h2 class="section-title">
+Galeria
+</h2>
+
+<div class="gallery">
+
+<img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200">
+
+</div>
+
 </section>
 
-<section class="section" id="kontakt">
-<h2>Kontakt</h2>
+<section class="section" id="contact">
 
-<div class="card">
-<p>Email: kontakt@czerwonelaki.pl</p>
-<p>Telefon: +48 500 000 000</p>
+<h2 class="section-title">
+Kontakt i Rezerwacje
+</h2>
+
+<div class="premium-box">
+
+<div>
+
+<h2>Zarezerwuj pobyt</h2>
+
+<p>
+Poczuj klimat prywatnego luxury retreat.
+Idealne miejsce na weekend, workation lub reset od miasta.
+</p>
+
+<a href="mailto:kontakt@czerwonelaki.pl" class="btn btn-gold">
+kontakt@czerwonelaki.pl
+</a>
+
+</div>
+
+<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1400">
+
 </div>
 
 </section>
@@ -215,32 +528,6 @@ padding:70px 6%;
 <footer>
 © 2026 Czerwone Łąki — Luxury Nature House
 </footer>
-
-<script>
-
-/* MAPA */
-
-const map = L.map('map').setView([51.3227, 21.9497], 12);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19,
-attribution: '&copy; OpenStreetMap'
-}).addTo(map);
-
-L.marker([51.3227, 21.9497])
-.addTo(map)
-.bindPopup('Czerwone Łąki')
-.openPopup();
-
-/* PWA */
-
-if ('serviceWorker' in navigator) {
-window.addEventListener('load', () => {
-navigator.serviceWorker.register('sw.js');
-});
-}
-
-</script>
 
 </body>
 </html>
